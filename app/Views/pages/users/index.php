@@ -6,7 +6,8 @@
 
 <?= $this->section('content'); ?>
     <div class="container pt-2">
-        <a href="" class="btn btn-success">
+        <h1>Data Users</h1>
+        <a href="/users/create" class="btn btn-success my-3">
             + Tambah Data
         </a>
         <table class="table">
@@ -31,8 +32,17 @@
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="users/<?= $user['id']; ?>">Detail</a></li>
                                     <li><a class="dropdown-item" href="#">Edit</a></li>
-                                    <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                    <li>
+                                        <form action="/users/<?= $user['id']; ?>" method="POST">
+                                            <?= csrf_field(); ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </li>
                                 </ul>
                             </div>
                         </td>

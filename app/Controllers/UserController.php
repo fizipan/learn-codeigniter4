@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\User;
+use CodeIgniter\HTTP\Request;
 
 class UserController extends BaseController
 {
@@ -18,11 +19,34 @@ class UserController extends BaseController
     {
         $users = $this->userModel->findAll();
 
-        $data = [
-            'title' => 'Data User',
-            'users' =>  $users,
-        ];
+        return view('pages/users/index', compact('users'));
+    }
 
-        echo view('pages/users/index', $data);
+    public function create()
+    {
+        return view('pages/users/create');
+    }
+
+    public function store()
+    {
+        $data = $this->request->getVar();
+        $data['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
+        $this->userModel->save($data);
+
+        return redirect()->to('users');
+    }
+
+    public function show($id)
+    {
+        $user = $this->userModel->find($id);
+
+        return view('pages/users/show', compact('user'));
+    }
+
+    public function destroy($id)
+    {
+        $this->userModel->delete($id);
+
+        return redirect()->route('users');
     }
 }
